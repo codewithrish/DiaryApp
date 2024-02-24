@@ -1,4 +1,4 @@
-package com.codewithrish.diaryapp
+package com.codewithrish.mydiaryapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.codewithrish.diaryapp.ui.theme.DiaryAppTheme
+import androidx.navigation.compose.rememberNavController
+import com.codewithrish.mydiaryapp.navigation.Screen
+import com.codewithrish.mydiaryapp.navigation.SetupNavGraph
+import com.codewithrish.mydiaryapp.ui.theme.DiaryAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +19,11 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         setContent {
             DiaryAppTheme {
-
+                val navController = rememberNavController()
+                SetupNavGraph(
+                    startDestination = Screen.Authentication.route,
+                    navController = navController
+                )
             }
         }
     }

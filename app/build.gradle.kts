@@ -14,11 +14,11 @@ plugins {
 }
 
 android {
-    namespace = "com.codewithrish.diaryapp"
+    namespace = "com.codewithrish.mydiaryapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.codewithrish.diaryapp"
+        applicationId = "com.codewithrish.mydiaryapp"
         minSdk = 21
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.codewithrish.diaryapp
+package com.codewithrish.mydiaryapp
 
 import org.junit.Test
 

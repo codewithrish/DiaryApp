@@ -1,4 +1,4 @@
-package com.codewithrish.diaryapp.ui.theme
+package com.codewithrish.mydiaryapp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
