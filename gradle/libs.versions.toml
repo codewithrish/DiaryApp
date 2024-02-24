@@ -1,0 +1,76 @@
+[versions]
+agp = "8.2.2"
+kotlin = "1.9.0"
+ksp = "1.9.22-1.0.17"
+core-ktx = "1.12.0"
+hilt = "2.49"
+google-services = "4.4.1"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
+lifecycle-runtime-ktx = "2.7.0"
+activity-compose = "1.8.2"
+compose-bom = "2024.02.01"
+realm-v = "1.11.0"
+navigation = "2.7.7"
+firebase-bom-v = "32.7.2"
+room-v = "2.6.1"
+compose-runtime-v = "2.7.0"
+splash-v = "1.0.1"
+coroutines = "1.7.1"
+realm-sync = "1.11.0"
+hilt-navigation = "1.2.0"
+coil-v = "2.3.0"
+pager-v = "0.27.0"
+picker-v = "1.0.2"
+message-bar-compose-v = "1.0.8"
+one-tap-compose-v = "1.0.12"
+desugar-jdk-v = "2.0.4"
+
+[libraries]
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom-v" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-v" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-v" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-v" }
+compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose-runtime-v" }
+splash = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-v" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+realm-sync = { group = "io.realm.kotlin", name = "library-sync", version.ref = "realm-sync" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }
+coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-v" }
+pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "pager-v" }
+message-bar-compose = { group = "com.github.stevdza-san", name = "MessageBarCompose", version.ref = "message-bar-compose-v" }
+one-tap-compose = { group = "com.github.stevdza-san", name = "OneTapCompose", version.ref = "one-tap-compose-v" }
+desugar-jdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-v" }
+date-time-picker = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "core", version.ref = "picker-v" }
+calender = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "calendar", version.ref = "picker-v" }
+clock = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "clock", version.ref = "picker-v" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+realmKotlin = { id = "io.realm.kotlin", version.ref = "realm-v" }
+daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
