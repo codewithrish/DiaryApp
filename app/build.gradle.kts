@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.realmKotlin)
     // Hilt
     alias(libs.plugins.daggerHilt)
-    alias(libs.plugins.googleServices)
+    // alias(libs.plugins.googleServices)
 }
 
 android {
@@ -42,6 +42,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -50,7 +51,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -82,7 +83,7 @@ dependencies {
     implementation(libs.firebase.storage)
     // Room components
     implementation(libs.room.runtime)
-    // ksp(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
     // Runtime Compose
     implementation(libs.compose.runtime)
@@ -106,7 +107,7 @@ dependencies {
     // One-Tap Compose
     implementation(libs.one.tap.compose)
     // Desugar JDK
-    implementation(libs.desugar.jdk)
+    coreLibraryDesugaring(libs.desugar.jdk)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

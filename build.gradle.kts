@@ -7,6 +7,6 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.realmKotlin) apply false
-    alias(libs.plugins.googleServices) apply false
+    // alias(libs.plugins.googleServices) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block

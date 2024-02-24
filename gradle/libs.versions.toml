@@ -1,10 +1,10 @@
 [versions]
 agp = "8.2.2"
-kotlin = "1.9.0"
+kotlin = "1.9.22"
 ksp = "1.9.22-1.0.17"
 core-ktx = "1.12.0"
 hilt = "2.49"
-google-services = "4.4.1"
+#google-services = "4.4.1"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
@@ -68,9 +68,9 @@ clock = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "clock", vers
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+#kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 realmKotlin = { id = "io.realm.kotlin", version.ref = "realm-v" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+#googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
