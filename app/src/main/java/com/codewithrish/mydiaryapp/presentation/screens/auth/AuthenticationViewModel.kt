@@ -6,13 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.codewithrish.mydiaryapp.util.Constants.APP_ID
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.Credentials
-import io.realm.kotlin.mongodb.GoogleAuthType
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class AuthenticationViewModel: ViewModel() {
+    var authenticated = mutableStateOf(false)
+        private set
     var loadingState = mutableStateOf(false)
         private set
 
@@ -22,7 +24,7 @@ class AuthenticationViewModel: ViewModel() {
 
     fun signInWithMongoAtlas(
         tokenId: String,
-        onSuccess: (Boolean) -> Unit,
+        onSuccess: () -> Unit,
         onError: (Exception) -> Unit
     ) {
         viewModelScope.launch {
@@ -37,7 +39,13 @@ class AuthenticationViewModel: ViewModel() {
                     ).loggedIn
                 }
                 withContext(Dispatchers.Main) {
-                    onSuccess(result)
+                    if (result) {
+                        onSuccess()
+                        delay(600)
+                        authenticated.value = true
+                    } else {
+                        onError(Exception("User is not logged in."))
+                    }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
