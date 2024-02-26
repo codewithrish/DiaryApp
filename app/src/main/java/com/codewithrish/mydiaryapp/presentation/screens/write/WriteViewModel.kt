@@ -53,10 +53,28 @@ class WriteViewModel(
         }
     }
 
-    fun setSelectedDiary(diary: Diary) { uiState = uiState.copy(selectedDairy = diary) }
+    private fun setSelectedDiary(diary: Diary) { uiState = uiState.copy(selectedDairy = diary) }
     fun setTitle(title: String) { uiState = uiState.copy(title = title) }
     fun setDescription(description: String) { uiState = uiState.copy(description = description) }
-    fun setMood(mood: Mood) { uiState = uiState.copy(mood = mood) }
+    private fun setMood(mood: Mood) { uiState = uiState.copy(mood = mood) }
+    fun insertDiary(
+        diary: Diary,
+        onSuccess:() -> Unit,
+        onError:(String) -> Unit,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = MongoDB.addNewDiary(diary = diary)
+            if (result is RequestState.Success) {
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } else if (result is RequestState.Error) {
+                withContext(Dispatchers.Main) {
+                    onError(result.error.message.toString())
+                }
+            }
+        }
+    }
 }
 
 data class UiState(

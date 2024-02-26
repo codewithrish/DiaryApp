@@ -42,7 +42,7 @@ object MongoDB: MongoRepository {
     }
 
     override fun getAllDiaries(): Flow<Diaries> {
-        return if (user != null) {
+        return user?.let {
             try {
                 realm.query<Diary>(query = "ownerId == $0", user.id)
                     .sort(property = "date", sortOrder = Sort.DESCENDING)
@@ -59,22 +59,31 @@ object MongoDB: MongoRepository {
             } catch (e: Exception) {
                 flow { emit(RequestState.Error(e)) }
             }
-        } else {
-            flow { emit(RequestState.Error(UserNotAuthenticatedException())) }
-        }
+        } ?: flow { emit(RequestState.Error(UserNotAuthenticatedException())) }
     }
 
     override fun getSelectedDiary(diaryId: ObjectId): RequestState<Diary> {
-        return if (user != null) {
+        return user?.let {
             try {
                 val diary = realm.query<Diary>(query = "_id == $0", diaryId).find().first()
                 RequestState.Success(data = diary)
             } catch (e: Exception) {
                 RequestState.Error(e)
             }
-        } else {
-            RequestState.Error(UserNotAuthenticatedException())
-        }
+        } ?: RequestState.Error(UserNotAuthenticatedException())
+    }
+
+    override suspend fun addNewDiary(diary: Diary): RequestState<Diary> {
+        return user?.let {
+            realm.write {
+                try {
+                    val addedDiary = copyToRealm(diary.apply { ownerId = user.id })
+                    RequestState.Success(data = diary)
+                } catch (e: Exception) {
+                    RequestState.Error(e)
+                }
+            }
+        } ?: RequestState.Error(UserNotAuthenticatedException())
     }
 }
 
