@@ -16,11 +16,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.codewithrish.mydiaryapp.model.Diary
 import com.codewithrish.mydiaryapp.presentation.components.DisplayAlertDialog
 import com.codewithrish.mydiaryapp.presentation.screens.auth.AuthenticationScreen
 import com.codewithrish.mydiaryapp.presentation.screens.auth.AuthenticationViewModel
 import com.codewithrish.mydiaryapp.presentation.screens.home.HomeScreen
 import com.codewithrish.mydiaryapp.presentation.screens.home.HomeViewModel
+import com.codewithrish.mydiaryapp.presentation.screens.write.WriteScreen
 import com.codewithrish.mydiaryapp.util.Constants.APP_ID
 import com.codewithrish.mydiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.codewithrish.mydiaryapp.util.RequestState
@@ -58,7 +60,11 @@ fun SetupNavGraph(
             },
             onDataLoaded = onDataLoaded
         )
-        writeRoute()
+        writeRoute(
+            onBackPressed =  {
+                navController.popBackStack()
+            }
+        )
     }
 }
 
@@ -161,7 +167,9 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
-fun NavGraphBuilder.writeRoute() {
+fun NavGraphBuilder.writeRoute(
+    onBackPressed: () -> Unit
+) {
     composable(
         route = Screen.Write.route,
         arguments = listOf(navArgument(name = WRITE_SCREEN_ARGUMENT_KEY) {
@@ -170,6 +178,10 @@ fun NavGraphBuilder.writeRoute() {
             defaultValue = null
         })
     ) {
-
+        WriteScreen (
+            selectedDiary = null,
+            onDeleteConfirmed = {},
+            onBackPressed = onBackPressed
+        )
     }
 }
