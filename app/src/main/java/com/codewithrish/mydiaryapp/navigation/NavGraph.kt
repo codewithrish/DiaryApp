@@ -1,5 +1,7 @@
 package com.codewithrish.mydiaryapp.navigation
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -23,9 +25,11 @@ import com.codewithrish.mydiaryapp.presentation.screens.auth.AuthenticationViewM
 import com.codewithrish.mydiaryapp.presentation.screens.home.HomeScreen
 import com.codewithrish.mydiaryapp.presentation.screens.home.HomeViewModel
 import com.codewithrish.mydiaryapp.presentation.screens.write.WriteScreen
+import com.codewithrish.mydiaryapp.presentation.screens.write.WriteViewModel
 import com.codewithrish.mydiaryapp.util.Constants.APP_ID
 import com.codewithrish.mydiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.codewithrish.mydiaryapp.util.RequestState
+import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -58,7 +62,10 @@ fun SetupNavGraph(
                 navController.popBackStack()
                 navController.navigate(Screen.Authentication.route)
             },
-            onDataLoaded = onDataLoaded
+            onDataLoaded = onDataLoaded,
+            navigateToWriteWithArgs = {
+                navController.navigate(Screen.Write.passDiaryId(diaryId = it))
+            }
         )
         writeRoute(
             onBackPressed =  {
@@ -117,6 +124,7 @@ fun NavGraphBuilder.authenticationRoute(
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
     navigateToAuth: () -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit,
     onDataLoaded:() -> Unit
 ) {
     composable(route = Screen.Home.route) {
@@ -145,7 +153,8 @@ fun NavGraphBuilder.homeRoute(
             onSignOutClicked = {
                 signOutDialogOpened = true
             },
-            navigateToWrite = navigateToWrite
+            navigateToWrite = navigateToWrite,
+            navigateToWriteWithArgs = navigateToWriteWithArgs
         )
 
         DisplayAlertDialog(
@@ -178,8 +187,17 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
+        val viewModel: WriteViewModel = viewModel()
+        val uiState = viewModel.uiState
+        val pagerState = rememberPagerState()
+
+        LaunchedEffect(key1 = uiState) {
+            Log.d("TAG", "writeRoute: ${uiState.selectedDairyId}")
+        }
+
         WriteScreen (
             selectedDiary = null,
+            pagerState = pagerState,
             onDeleteConfirmed = {},
             onBackPressed = onBackPressed
         )
