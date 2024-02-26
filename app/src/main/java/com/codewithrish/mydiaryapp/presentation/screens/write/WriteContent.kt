@@ -130,7 +130,9 @@ fun WriteContent(
                     .height(54.dp),
                 onClick = {},
                 shape = Shapes().small
-            ) {}
+            ) {
+                Text(text = "Save")
+            }
         }
     }
 }
