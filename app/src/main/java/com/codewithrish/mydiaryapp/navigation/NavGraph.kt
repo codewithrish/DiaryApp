@@ -1,7 +1,7 @@
 package com.codewithrish.mydiaryapp.navigation
 
 import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.widget.Toast
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,7 +20,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.codewithrish.mydiaryapp.model.Diary
 import com.codewithrish.mydiaryapp.model.Mood
 import com.codewithrish.mydiaryapp.presentation.components.DisplayAlertDialog
 import com.codewithrish.mydiaryapp.presentation.screens.auth.AuthenticationScreen
@@ -190,6 +190,7 @@ fun NavGraphBuilder.writeRoute(
         })
     ) {
         val viewModel: WriteViewModel = viewModel()
+        val context = LocalContext.current
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
@@ -202,7 +203,15 @@ fun NavGraphBuilder.writeRoute(
             uiState = uiState,
             moodName = { Mood.entries[pageNumber].name },
             pagerState = pagerState,
-            onDeleteConfirmed = {},
+            onDeleteConfirmed = { viewModel.deleteDiary(
+                onSuccess = {
+                    Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+                    onBackPressed()
+                },
+                onError = { message ->
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+            ) },
             onDateTimeUpdated = { viewModel.updateDateTime(zonedDateTime = it) },
             onBackPressed = onBackPressed,
             onTitleChanged = { viewModel.setTitle(title = it) },
@@ -210,8 +219,10 @@ fun NavGraphBuilder.writeRoute(
             onSaveClicked = {
                 viewModel.upsertDiary(
                     diary = it.apply { mood = Mood.entries[pageNumber].name },
-                    onSuccess = { onBackPressed() },
-                    onError = {}
+                    onSuccess = onBackPressed,
+                    onError = { message ->
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    }
                 )
             }
         )
