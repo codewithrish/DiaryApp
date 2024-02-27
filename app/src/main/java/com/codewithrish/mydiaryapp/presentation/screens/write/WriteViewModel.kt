@@ -11,10 +11,13 @@ import com.codewithrish.mydiaryapp.model.Diary
 import com.codewithrish.mydiaryapp.model.Mood
 import com.codewithrish.mydiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.codewithrish.mydiaryapp.util.RequestState
+import com.codewithrish.mydiaryapp.util.toRealmInstant
+import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mongodb.kbson.ObjectId
+import java.time.ZonedDateTime
 
 class WriteViewModel(
     private val savedStateHandle: SavedStateHandle
@@ -58,21 +61,54 @@ class WriteViewModel(
     fun setTitle(title: String) { uiState = uiState.copy(title = title) }
     fun setDescription(description: String) { uiState = uiState.copy(description = description) }
     private fun setMood(mood: Mood) { uiState = uiState.copy(mood = mood) }
-    fun insertDiary(
+    fun updateDateTime(zonedDateTime: ZonedDateTime) { uiState = uiState.copy(updatedDateTime = zonedDateTime.toInstant().toRealmInstant()) }
+    fun upsertDiary(
         diary: Diary,
         onSuccess:() -> Unit,
         onError:(String) -> Unit,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = MongoDB.insertDiary(diary = diary)
-            if (result is RequestState.Success) {
-                withContext(Dispatchers.Main) {
-                    onSuccess()
-                }
-            } else if (result is RequestState.Error) {
-                withContext(Dispatchers.Main) {
-                    onError(result.error.message.toString())
-                }
+            uiState.selectedDairyId?.let {
+                updateDairy(diary, onSuccess, onError)
+            } ?: insertDiary(diary, onSuccess, onError)
+        }
+    }
+    private suspend fun insertDiary(
+        diary: Diary,
+        onSuccess:() -> Unit,
+        onError:(String) -> Unit,
+    ) {
+        val result = MongoDB.insertDiary(diary = diary.apply {
+                uiState.updatedDateTime?.let { date = uiState.updatedDateTime!!
+            }
+        })
+        if (result is RequestState.Success) {
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        } else if (result is RequestState.Error) {
+            withContext(Dispatchers.Main) {
+                onError(result.error.message.toString())
+            }
+        }
+    }
+
+    private suspend fun updateDairy(
+        diary: Diary,
+        onSuccess:() -> Unit,
+        onError:(String) -> Unit,
+    ) {
+        val result = MongoDB.updateDiary(diary = diary.apply {
+            _id = ObjectId.invoke(uiState.selectedDairyId!!)
+            date =  uiState.updatedDateTime?.let { uiState.updatedDateTime!! } ?: uiState.selectedDairy!!.date
+        })
+        if (result is RequestState.Success) {
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        } else if (result is RequestState.Error) {
+            withContext(Dispatchers.Main) {
+                onError(result.error.message.toString())
             }
         }
     }
@@ -84,4 +120,5 @@ data class UiState(
     val title: String = "",
     val description: String = "",
     val mood: Mood = Mood.Neutral,
+    val updatedDateTime: RealmInstant? = null
 )

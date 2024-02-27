@@ -90,12 +90,15 @@ object MongoDB: MongoRepository {
     override suspend fun updateDiary(diary: Diary): RequestState<Diary> {
         return user?.let {
             realm.write {
-                try {
-                    val addedDiary = copyToRealm(diary.apply { ownerId = user.id })
-                    RequestState.Success(data = diary)
-                } catch (e: Exception) {
-                    RequestState.Error(e)
-                }
+                val queryDiary = query<Diary>(query = "_id == $0", diary._id).first().find()
+                queryDiary?.let {
+                    queryDiary.title = diary.title
+                    queryDiary.description = diary.description
+                    queryDiary.mood = diary.mood
+                    queryDiary.images = diary.images
+                    queryDiary.date = diary.date
+                    RequestState.Success(data = queryDiary)
+                } ?: RequestState.Error(Exception("Queried Diary does not exist."))
             }
         } ?: RequestState.Error(UserNotAuthenticatedException())
     }
