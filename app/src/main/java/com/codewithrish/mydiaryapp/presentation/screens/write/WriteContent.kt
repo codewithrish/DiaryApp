@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -21,9 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -32,8 +39,8 @@ import com.codewithrish.mydiaryapp.model.Diary
 import com.codewithrish.mydiaryapp.model.Mood
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WriteContent(
     uiState: UiState,
@@ -47,8 +54,18 @@ fun WriteContent(
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(key1 = scrollState.maxValue) {
+        scrollState.scrollTo(scrollState.maxValue)
+    }
+
     Column(
         modifier = Modifier
+            .fillMaxSize()
+            .imePadding()
+            .navigationBarsPadding()
             .padding(top = paddingValues.calculateTopPadding())
             .padding(bottom = 24.dp)
             .padding(horizontal = 24.dp),
@@ -94,10 +111,10 @@ fun WriteContent(
                 ),
                 keyboardActions = KeyboardActions(
                     onNext = {
-//                        scope.launch {
-//                            scrollState.animateScrollTo(Int.MAX_VALUE)
-//                            focusManager.moveFocus(FocusDirection.Down)
-//                        }
+                        scope.launch {
+                            scrollState.animateScrollTo(Int.MAX_VALUE)
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
                     }
                 ),
                 maxLines = 1,
@@ -122,7 +139,7 @@ fun WriteContent(
                 ),
                 keyboardActions = KeyboardActions(
                     onNext = {
-                        // focusManager.clearFocus()
+                        focusManager.clearFocus()
                     }
                 )
             )
