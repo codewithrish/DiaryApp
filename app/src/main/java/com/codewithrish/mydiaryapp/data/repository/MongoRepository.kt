@@ -1,7 +1,7 @@
 package com.codewithrish.mydiaryapp.data.repository
 
 import com.codewithrish.mydiaryapp.model.Diary
-import com.codewithrish.mydiaryapp.util.RequestState
+import com.codewithrish.mydiaryapp.model.RequestState
 import kotlinx.coroutines.flow.Flow
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate

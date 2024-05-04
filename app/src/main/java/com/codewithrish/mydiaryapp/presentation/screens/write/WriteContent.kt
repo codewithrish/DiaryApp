@@ -1,5 +1,6 @@
 package com.codewithrish.mydiaryapp.presentation.screens.write
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +37,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.codewithrish.mydiaryapp.model.Diary
+import com.codewithrish.mydiaryapp.model.GalleryState
 import com.codewithrish.mydiaryapp.model.Mood
+import com.codewithrish.mydiaryapp.presentation.components.GalleryUploader
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.launch
@@ -46,11 +49,13 @@ fun WriteContent(
     uiState: UiState,
     paddingValues: PaddingValues,
     pagerState: PagerState,
+    galleryState: GalleryState,
     title: String,
     onTitleChanged: (String) -> Unit,
     description: String,
     onDescriptionChanged: (String) -> Unit,
     onSaveClicked: (Diary) -> Unit,
+    onImageSelect: (Uri) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -145,6 +150,13 @@ fun WriteContent(
             )
         }
         Column(verticalArrangement = Arrangement.Bottom) {
+            Spacer(modifier = Modifier.height(12.dp))
+            GalleryUploader(
+                galleryState = galleryState,
+                onAddClicked = {},
+                onImageSelect = onImageSelect,
+                onImageClicked = {}
+            )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
                 modifier = Modifier

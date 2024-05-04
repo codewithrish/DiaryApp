@@ -2,7 +2,7 @@ package com.codewithrish.mydiaryapp.data.repository
 
 import com.codewithrish.mydiaryapp.model.Diary
 import com.codewithrish.mydiaryapp.util.Constants.APP_ID
-import com.codewithrish.mydiaryapp.util.RequestState
+import com.codewithrish.mydiaryapp.model.RequestState
 import com.codewithrish.mydiaryapp.util.toInstant
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query

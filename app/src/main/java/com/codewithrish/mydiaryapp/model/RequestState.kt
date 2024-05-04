@@ -1,4 +1,4 @@
-package com.codewithrish.mydiaryapp.util
+package com.codewithrish.mydiaryapp.model
 
 sealed class RequestState<out T> {
     data object Idle: RequestState<Nothing>()

@@ -20,6 +20,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.codewithrish.mydiaryapp.model.GalleryImage
 import com.codewithrish.mydiaryapp.model.Mood
 import com.codewithrish.mydiaryapp.presentation.components.DisplayAlertDialog
 import com.codewithrish.mydiaryapp.presentation.screens.auth.AuthenticationScreen
@@ -30,7 +31,8 @@ import com.codewithrish.mydiaryapp.presentation.screens.write.WriteScreen
 import com.codewithrish.mydiaryapp.presentation.screens.write.WriteViewModel
 import com.codewithrish.mydiaryapp.util.Constants.APP_ID
 import com.codewithrish.mydiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.codewithrish.mydiaryapp.util.RequestState
+import com.codewithrish.mydiaryapp.model.RequestState
+import com.codewithrish.mydiaryapp.model.rememberGalleryState
 import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
@@ -193,6 +195,7 @@ fun NavGraphBuilder.writeRoute(
         val context = LocalContext.current
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
+        val galleryState = rememberGalleryState()
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
         LaunchedEffect(key1 = uiState) {
@@ -203,6 +206,7 @@ fun NavGraphBuilder.writeRoute(
             uiState = uiState,
             moodName = { Mood.entries[pageNumber].name },
             pagerState = pagerState,
+            galleryState = galleryState,
             onDeleteConfirmed = { viewModel.deleteDiary(
                 onSuccess = {
                     Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
@@ -223,6 +227,14 @@ fun NavGraphBuilder.writeRoute(
                     onError = { message ->
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
+                )
+            },
+            onImageSelect = {
+                galleryState.addImage(
+                    GalleryImage(
+                        image = it,
+                        remoteImagePath = ""
+                    )
                 )
             }
         )

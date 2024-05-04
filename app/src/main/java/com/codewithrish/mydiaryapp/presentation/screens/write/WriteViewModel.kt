@@ -10,7 +10,7 @@ import com.codewithrish.mydiaryapp.data.repository.MongoDB
 import com.codewithrish.mydiaryapp.model.Diary
 import com.codewithrish.mydiaryapp.model.Mood
 import com.codewithrish.mydiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.codewithrish.mydiaryapp.util.RequestState
+import com.codewithrish.mydiaryapp.model.RequestState
 import com.codewithrish.mydiaryapp.util.toRealmInstant
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
