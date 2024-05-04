@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.realmKotlin)
     // Hilt
     alias(libs.plugins.daggerHilt)
-    // alias(libs.plugins.googleServices)
+    alias(libs.plugins.googleServices)
 }
 
 android {
