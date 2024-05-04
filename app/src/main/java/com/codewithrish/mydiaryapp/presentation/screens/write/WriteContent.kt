@@ -42,6 +42,7 @@ import com.codewithrish.mydiaryapp.model.Mood
 import com.codewithrish.mydiaryapp.presentation.components.GalleryUploader
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -167,6 +168,7 @@ fun WriteContent(
                         onSaveClicked(Diary().apply {
                             this.title = uiState.title
                             this.description = uiState.description
+                            this.images = galleryState.images.map { it1 -> it1.remoteImagePath }.toRealmList()
                         })
                     } else {
                         Toast.makeText(context, "Fields cannot be empty.", Toast.LENGTH_SHORT).show()
