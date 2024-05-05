@@ -14,6 +14,7 @@ import com.codewithrish.mydiaryapp.model.GalleryState
 import com.codewithrish.mydiaryapp.model.Mood
 import com.codewithrish.mydiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.codewithrish.mydiaryapp.model.RequestState
+import com.codewithrish.mydiaryapp.util.fetchImagesFromFirebase
 import com.codewithrish.mydiaryapp.util.toRealmInstant
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
@@ -59,6 +60,20 @@ class WriteViewModel(
                             setTitle(title = diary.data.title)
                             setDescription(description = diary.data.description)
                             setMood(mood = Mood.valueOf(diary.data.mood))
+
+                            fetchImagesFromFirebase(
+                                remoteImagePaths = diary.data.images,
+                                onImageDownload = { downloadedImage ->
+                                    galleryState.addImage(
+                                        GalleryImage(
+                                            image = downloadedImage,
+                                            remoteImagePath = extractImagePath(
+                                                fullImageUrl = downloadedImage.path.toString(),
+                                            )
+                                        )
+                                    )
+                                }
+                            )
                         }
                     }
                 }
@@ -161,6 +176,12 @@ class WriteViewModel(
             val imageRef = storageRef.child(it.remoteImagePath)
             imageRef.putFile(it.image)
         }
+    }
+
+    private fun extractImagePath(fullImageUrl: String): String {
+        val chunks = fullImageUrl.split("%2F")
+        val imageName = chunks.last()
+        return "images/${FirebaseAuth.getInstance().currentUser?.uid}/$imageName"
     }
 }
 
